@@ -8,6 +8,8 @@ public class EnemyController : MonoBehaviour
 {
     public Action onEnemyDestroyed;
     public Action onWrongEnemy;
+    public float timeChange;
+    float temp;
     private void Start()
     {
         int randomEnemy = Random.Range(0, 2);
@@ -19,6 +21,7 @@ public class EnemyController : MonoBehaviour
         {
             this.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
         }
+        temp = timeChange;
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -56,5 +59,30 @@ public class EnemyController : MonoBehaviour
     public void OnEnemyDestroyed()
     {
         Debug.Log("enemy destroyed");
+    }
+    private void Update()
+    {
+        timeChange -= Time.deltaTime;
+        if (timeChange <temp/2f)
+        {
+            //Debug.Log(this.GetComponent<Renderer>().material.GetColor("_Color") == Color.red);
+            if (this.GetComponent<Renderer>().material.GetColor("_Color") == Color.red)
+            {
+                this.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+            }
+            timeChange -= Time.deltaTime;
+
+            if (timeChange < 0f)
+            {
+                //Debug.Log(this.GetComponent<Renderer>().material.GetColor("_Color") == Color.red);
+                if (this.GetComponent<Renderer>().material.GetColor("_Color") == Color.blue)
+                {
+                    this.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                }
+                timeChange = temp;
+            }
+
+        }
+       
     }
 }
